@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+  <p>Welcome {{ user.first_name }}! This is the Data Central!</p>
+</h1>
+<div class="column is-three-fifths is-offset-one-fifth">
+  <div class="box">
+    <h1 class="title has-text-black	is-center">Grocery Dashboards</h1>
+    <figure class="image is-2by1">
+    <img src="{{ url_for('static', filename='final_data_dashboards.png') }}" alt="Dashboards">
+  </figure>
+  </div>
+</div>
+
+<div class="column is-full">
+  <div class="box">
+    <h1 class="title has-text-black	has-text-left">Data Selector</h1>
+    <form method="POST" action="/datapage">
+      <div class="field has-text-left">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="notification is-danger">
+            {{ messages[0] }}
+        </div>
+        {% endif %}
+        {% endwith %}
+        <label class="label">Query Households (Default Load is 10)</label>
+        <div class="field has-addons">
+          <div class="control">
+            <input class="input is-normal" type="text" name="query_id" id="query_id" placeholder="Household ID" autofocus="">
+          </div>
+          <div class="control">
+            <button class="button is-info is-normal">Query DB</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% if headers %}
+<div class="column is-fullwidth">
+  <div class="box table-container">
+    <h1 class="title has-text-black	has-text-left">Household Data</h1>
+            <table id="hs_data" class="table is-striped">
+                <thead>
+                    <tr>
+                    {% for head in headers %}
+                        <th>{{ head }}</th>
+                    {% endfor %}
+                    </tr>
+
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% block datatable_scripts %}
+<script>
+  $(document).ready(function() {
+      $('#hs_data').DataTable({
+          
+          ajax: "{{ url_for('flaskapp.get_ajax_data') }}?hs_num={{ hs_num }}",
+          columns: [
+              {data: "HSHD_NUM"},
+              {data: "BASKET_NUM"},
+              {data: "PURCHASE_DATE"},
+              {data: "PRODUCT_NUM"},
+              {data: "DEPARTMENT"},
+              {data: "COMMODITY"},
+              {data: "SPEND"},
+              {data: "UNITS"},
+              {data: "STORE_R"},
+              {data: "WEEK_NUM"},
+              {data: "YEAR"},
+              {data: "L"},
+              {data: "AGE_RANGE"},
+              {data: "MARITAL"},
+              {data: "INCOME_RANGE"},
+              {data: "HOMEOWNER"},
+              {data: "HSHD_COMPOSITION"},
+              {data: "HH_SIZE"},
+              {data: "CHILDREN"}
+          ],
+      });
+  });
+</script>
+{% endblock %}
+
+{% endif %}
+
+{% endblock %}
