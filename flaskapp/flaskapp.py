@@ -48,12 +48,9 @@ def datapage():
     need to render the following:
     DEFAULT ONE TABLE TO HSHD_NUM = 10 ON LOAD
     0. make a dashboard at the top and the searchable table next for readability, cause thats a lotta rows
-        Retail Question: Which demographic factors (e.g. household size, presence of children, income) appear to affect customer engagement?
     1. display a table of all columns where HSHD_NUM = 10
         order by HSHD_NUM, BASKET_NUM, PURCHASE_DATE, PRODUCT_NUM, DEPARTMENT, COMMODITY
-    2. give a dropdown that retrieves hshd_num
-        on click, display a table filtering on that with the following order of columns
-        order by HSHD_NUM, BASKET_NUM, PURCHASE_DATE, PRODUCT_NUM, DEPARTMENT, COMMODITY
+    2. let user enter a new id into text box and refresh data table with fancy ajax
     """
     if request.method == 'POST':
         household_id = request.form.get('query_id')
